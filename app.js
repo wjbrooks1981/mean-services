@@ -7,6 +7,7 @@ var session = require('express-session')
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var index = require('./routes/index')
 var api = require('./routes/api');
 var authenticate = require('./routes/authenticate')(passport)
 
@@ -33,6 +34,7 @@ app.use(bodyParser.json());
   var initPassport = require('./passport-init');
   initPassport(passport);
 
+  app.use('/', index)
   app.use('/api', api);
   app.use('/auth', authenticate);
 
@@ -47,7 +49,9 @@ app.use(bodyParser.json());
   app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  env =  req.app.get('env');
+  env = 'development'
+  res.locals.error = env === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);

@@ -39,7 +39,7 @@ module.exports = function(passport){
 		function(req, username, password, done) {
 
 			if (users[username]){
-				console.log('Invalid sign up data');
+				console.log('Validation Issue with Signup Data');
 				return done(null, false);
 			}
 
