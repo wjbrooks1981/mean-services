@@ -6,11 +6,13 @@ var passport = require('passport');
 var session = require('express-session')
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var mongoose = require('mongoose')
 var index = require('./routes/index')
 var api = require('./routes/api');
 var authenticate = require('./routes/authenticate')(passport)
-
+require('./models/post.js')
+require('./models/user.js')
+mongoose.connect("mongodb://localhost:27017/chrip-test");
 var app = express();
 
 // view engine setup
