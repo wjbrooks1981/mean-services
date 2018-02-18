@@ -8,7 +8,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose')
 var index = require('./routes/index')
-var api = require('./routes/api');
 var authenticate = require('./routes/authenticate')(passport)
 require('./models/post.js')
 require('./models/user.js')
@@ -37,6 +36,7 @@ app.use(bodyParser.json());
   initPassport(passport);
 
   app.use('/', index)
+  index.
 
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
