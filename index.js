@@ -1,3 +1,6 @@
+var api = require('./api');
+var authenticate = require('./authenticate')(passport)
+
 var express = require('express');
 var router = express.Router();
 
@@ -10,5 +13,8 @@ router.get('/', function(req, res, next) {
   //   title: "Chirp"
   // });
 });
+
+router.use('/api', api);
+
 
 module.exports = router;

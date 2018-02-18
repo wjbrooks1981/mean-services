@@ -37,8 +37,6 @@ app.use(bodyParser.json());
   initPassport(passport);
 
   app.use('/', index)
-  app.use('/api', api);
-  app.use('/auth', authenticate);
 
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
