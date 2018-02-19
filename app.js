@@ -3,17 +3,17 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var passport = require('passport');
-var session = require('express-session')
+var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose')
-require('./models/post.js')
-require('./models/user.js')
+var mongoose = require('mongoose');
+require('./models/post.js');
+require('./models/user.js');
 mongoose.connect("mongodb://localhost:27017/chrip-test");
 var app = express();
-var index = require('./routes/index')
+var index = require('./routes/index');
 var api = require('./routes/api');
-var authenticate = require('./routes/authenticate')(passport)
+var authenticate = require('./routes/authenticate')(passport);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -35,7 +35,7 @@ app.use(bodyParser.json());
   var initPassport = require('./passport-init');
   initPassport(passport);
 
-  app.use('/', index)
+  app.use('/', index);
   app.use('/api', api);
   app.use('/auth', authenticate);
 
@@ -51,7 +51,7 @@ app.use(bodyParser.json());
   // set locals, only providing error in development
   res.locals.message = err.message;
   env =  req.app.get('env');
-  env = 'development'
+  env = 'development';
   res.locals.error = env === 'development' ? err : {};
 
   // render the error page
