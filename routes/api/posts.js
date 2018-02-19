@@ -1,39 +1,70 @@
+var mongoose = require('mongoose');
+var Post = mongoose.model('Post');
 router = require('express').Router();
 
 router.route('/')
   //returns all posts
   .get(function(req, res) {
-    //Temp solution until DB available
-    res.send({
-      message: 'TODO: Return All Posts'
+    Post.find(function(err, posts){
+      if(err){
+        return res.status(500).send({ message: 'Function could not complete'});
+      }
+      return res.send(posts);
     });
   })
 
   .post(function(req, res) {
-    //temp until DB
-    res.send({
-      message: 'TODO: Create a Post'
-    })
+    var post = new Post();
+    post.text = req.body.text;
+    post.username = req.body.username;
+    post.save(function(err, post){
+      if(err){
+        return res.status(500).send(err);
+      }
+      return res.json(post);
+    });
   });
 
 router.route('/:id')
-
   .get(function(req, res) {
-    res.send({
-      message: 'TODO: Getting a specific post with id:' + req.params.id
-    })
+    Post.findById(req.params.id, function(err, post){
+      if(err){
+        return res.status(500).send({message: "Server Error:" + err});
+      }
+      if(!post){
+        return res.status(404);
+      }
+      return res.send(post);
+    });
   })
 
   .delete(function(req, res) {
-    res.send({
-      message: 'TODO: Delete a post with id: ' + req.params.id
-    })
+    Post.deleteOne({ '_id': req.params.id}, function(err, post){
+      if(err){
+        return res.status(500).send({message: "Server Error:" + err});
+      }
+      if(!post){
+        return res.send(404);
+      }
+      return res.send(204);
+    });
   })
 
   .put(function(req, res) {
-    res.send({
-      message: 'TODO: Update the post with id: ' + req.params.id
-    })
+    Post.findById(req.params.id, function(err, post){
+      if(err){
+        return res.status(500).send({message: "Server Error:" + err});
+      }
+      if(!post){
+        return res.status(404).send();
+      }
+      post.text = req.body.text;
+      post.save(function(err, post){
+        if(err){
+          return res.status(500).send( {message: "Server Error:" + err});
+        }
+        return res.status(200).send(post);
+      });
+    });
   });
-
-module.exports = router
+module.exports = router;

@@ -1,3 +1,5 @@
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 router = require('express').Router();
 
 router.route('/')
