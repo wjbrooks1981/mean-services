@@ -15,26 +15,26 @@ router.route('/')
     //temp until DB
     res.send({
       message: 'TODO: Create a User'
-    })
+    });
   });
 
 router.route('/:id')
   .get(function(req, res) {
     res.send({
       message: 'TODO: Getting a specific user with id:' + req.params.id
-    })
+    });
   })
 
   .delete(function(req, res) {
     res.send({
       message: 'TODO: Delete a user with id: ' + req.params.id
-    })
+    });
   })
 
   .put(function(req, res) {
     res.send({
       message: 'TODO: Update the user with id: ' + req.params.id
-    })
+    });
   });
 
-module.exports = router
+module.exports = router;
