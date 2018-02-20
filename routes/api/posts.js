@@ -16,7 +16,7 @@ router.route('/')
   .post(function(req, res) {
     var post = new Post();
     post.text = req.body.text;
-    post.username = req.body.username;
+    post.created_by = req.body.created_by;
     post.save(function(err, post){
       if(err){
         return res.status(500).send(err);

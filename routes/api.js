@@ -1,5 +1,5 @@
-var posts = require('./api/posts')
-var users = require('./api/users')
+var posts = require('./api/posts');
+var users = require('./api/users');
 var router = require('express').Router();
 
 //Used for routes that must be authenticated.
@@ -9,7 +9,7 @@ function isAuthenticated(req, res, next) {
   // request and response objects
 
   //allow all get request methods for post
-  console.log(req);
+  // console.log(req);
   if (req.method === "GET" && req.originalUrl === "/api/posts") {
     return next();
   }
@@ -18,7 +18,7 @@ function isAuthenticated(req, res, next) {
   }
   // if the user is not authenticated then redirect him to the login page
   return res.redirect('/#login');
-};
+}
 router.use('/posts', isAuthenticated, posts);
 router.use('/users', isAuthenticated, users);
 

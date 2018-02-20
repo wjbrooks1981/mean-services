@@ -16,7 +16,7 @@ module.exports = function(passport) {
     res.send({
       state: 'failure',
       user: null,
-      message: "Unauthorized Session"
+      message: "Error occured with authorization"
     });
   });
 
