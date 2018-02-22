@@ -44,9 +44,9 @@ router.route('/:id')
         return res.status(500).send({message: "Server Error:" + err});
       }
       if(!post){
-        return res.send(404);
+        return res.sendStatus(404);
       }
-      return res.send(204);
+      return res.sendStatus(204);
     });
   })
 

@@ -16,10 +16,11 @@
       <div class="container">
         <a class="navbar-brand" href="#/"> Chirp! </a>
         <p class="navbar-text"> Learn the MEAN stack by building this tiny app</p>
-        <p class="navbar-right navbar-text" ng-hide="authenticated"><a href="#/login">Login</a> or <a href="#/signup">Sign Up</a></p>
-        <p class="navbar-right navbar-text" ng-show="authenticated"><a href="#/" ng-click="signout()">Logout</a></p>
-        <p class="navbar-right navbar-text" ng-show="authenticated">Hello, <b>{{current_user}}</b></p>
-        <p class="navbar-right navbar-text" ng-show="authenticated"><a href="#/users">Users</a></p>
+        <p class="navbar-right navbar-text" ng-hide="current_user"><a href="#/login">Login</a> or <a href="#/signup">Sign Up</a></p>
+        <p class="navbar-right navbar-text" ng-show="current_user"><a href="#/" ng-click="signout()">Logout</a></p>
+        <p class="navbar-right navbar-text" ng-show="current_user">Hello, <b>{{current_user.username}}</b></p>
+        <p class="navbar-right navbar-text" ng-show="current_user.isAdmin"><a href="#/users">Users</a></p>
+        <p class="navbar-right navbar-text"><a href="#/">Posts</a></p>
       </div>
     </nav>
     <div class="col-md-offset-2 col-md-8">

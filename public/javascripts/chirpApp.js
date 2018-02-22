@@ -1,11 +1,9 @@
 var app = angular.module('chirpApp', ['ngRoute', 'ngResource']).run(function($rootScope, $http) {
-  $rootScope.authenticated = false;
-  $rootScope.current_user = '';
+  $rootScope.current_user = null;
 
   $rootScope.signout = function() {
     $http.get('auth/signout');
-    $rootScope.authenticated = false;
-    $rootScope.current_user = '';
+    $rootScope.current_user = null;
   };
 });
 
@@ -44,8 +42,17 @@ app.factory('userService', function($resource) {
   });
 });
 
-app.controller('userController', function(userService, $scope, $rootScope){
+app.controller('userController', function(userService, $scope, $rootScope) {
   $scope.users = userService.query();
+  $scope.delete = function(id) {
+    userService.delete({
+      id: id
+    }, function() {
+      $scope.posts = userService.query();
+    });
+    // console.log('Delete is called here:' + id);
+  };
+
 });
 
 app.controller('mainController', function(postService, $scope, $rootScope) {
@@ -57,7 +64,7 @@ app.controller('mainController', function(postService, $scope, $rootScope) {
   };
 
   $scope.post = function() {
-    $scope.newPost.created_by = $rootScope.current_user;
+    $scope.newPost.created_by = $rootScope.current_user.username;
     $scope.newPost.created_at = Date.now();
     postService.save($scope.newPost, function() {
       $scope.posts = postService.query();
@@ -89,8 +96,7 @@ app.controller('authController', function($scope, $http, $rootScope, $location) 
   $scope.login = function() {
     $http.post('/auth/login', $scope.user).success(function(data) {
       if (data.state == 'success') {
-        $rootScope.authenticated = true;
-        $rootScope.current_user = data.user.username;
+        $rootScope.current_user = { username: data.user.username, isAdmin: data.user.isAdmin };
         $location.path('/');
       } else {
         $scope.error_message = data.message;
@@ -101,8 +107,7 @@ app.controller('authController', function($scope, $http, $rootScope, $location) 
   $scope.signup = function() {
     $http.post('/auth/signup', $scope.user).success(function(data) {
       if (data.state == 'success') {
-        $rootScope.authenticated = true;
-        $rootScope.current_user = data.user.username;
+        $rootScope.current_user = { username: data.user.username, isAdmin: data.user.isAdmin };
         $location.path('/');
       } else {
         $scope.error_message = data.message;

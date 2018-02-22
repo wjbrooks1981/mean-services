@@ -1,5 +1,12 @@
 <h4>Users</h4>
+<form ng-show="current_user.isAdmin" class="form-auth" ng-submit="signup()">
+  <p class="text-warning">{{error_message}}</p>
+  <input type="username" ng-model="user.username" placeholder="Username" class="form-control"><br>
+  <input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
+  <input type="submit" value="Sign Up" class="btn btn-primary" />
+</form>
 <div class="user" ng-repeat="user in users | orderBy:'username':false" ng-class-odd="'odd'" ng-class-even="'even'">
+  <a ng-show="user.username!=current_user.username && current_user.isAdmin" ng-click="delete(user._id)" />x</a>
   <small>{{user.username}}</small>
   <small class="pull-right">{{user.created_at | date:"h:mma 'on' MMM d, y"}}</small>
 </div>
