@@ -25,6 +25,10 @@ app.config(function($routeProvider) {
     .when('/signup', {
       templateUrl: 'signup.html',
       controller: 'authController'
+    })
+    .when('/users', {
+      templateUrl: 'users.html',
+      controller: 'userController'
     });
 });
 
@@ -32,6 +36,16 @@ app.factory('postService', function($resource) {
   return $resource('/api/posts/:id', {
     id: '@id'
   });
+});
+
+app.factory('userService', function($resource) {
+  return $resource('/api/users/:id', {
+    id: '@id'
+  });
+});
+
+app.controller('userController', function(userService, $scope, $rootScope){
+  $scope.users = userService.query();
 });
 
 app.controller('mainController', function(postService, $scope, $rootScope) {

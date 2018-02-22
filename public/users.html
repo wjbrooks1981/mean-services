@@ -1,0 +1,5 @@
+<h4>Users</h4>
+<div class="user" ng-repeat="user in users | orderBy:'username':false" ng-class-odd="'odd'" ng-class-even="'even'">
+  <small>{{user.username}}</small>
+  <small class="pull-right">{{user.created_at | date:"h:mma 'on' MMM d, y"}}</small>
+</div>
