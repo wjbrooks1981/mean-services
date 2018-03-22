@@ -1,9 +1,12 @@
 <h4>Users</h4>
-<form ng-show="current_user.isAdmin" class="form-auth" ng-submit="signup()">
+<form ng-show="current_user.isAdmin" class="form-auth" ng-submit="createUser()">
   <p class="text-warning">{{error_message}}</p>
   <input type="username" ng-model="user.username" placeholder="Username" class="form-control"><br>
   <input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
-  <input type="submit" value="Sign Up" class="btn btn-primary" />
+  <label class="checkbox-inline">
+    <input type="checkbox" name="adminCheck" ng-model="user.isAdmin"> Is Admin
+  </label><br>
+  <input type="submit" value="Create" class="btn btn-primary" />
 </form>
 <div class="user" ng-repeat="user in users | orderBy:'username':false" ng-class-odd="'odd'" ng-class-even="'even'">
   <a ng-show="user.username!=current_user.username && current_user.isAdmin" ng-click="delete(user._id)" />x</a>

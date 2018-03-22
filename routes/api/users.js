@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var bCrypt = require('bcrypt-nodejs');
 router = require('express').Router();
 
 router.route('/')
@@ -7,6 +8,8 @@ router.route('/')
     User.find({}, {
       username: 1,
       created_at: 1,
+      isActive: 1,
+      isAdmin: 1,
       _id: 1
     }, function(err, users) {
       if (err) {
@@ -19,9 +22,16 @@ router.route('/')
   })
 
   .post(function(req, res) {
-    //temp until DB
-    res.send({
-      message: 'TODO: Create a User'
+    var user = new User();
+    user.username = req.body.username;
+    user.password = createHash(req.body.password);
+    user.isAdmin = req.body.isAdmin;
+    user.isActive = true;
+    user.save(function(err, post){
+      if(err){
+        return res.status(500).send(err);
+      }
+      return res.json(post);
     });
   });
 
@@ -30,7 +40,9 @@ router.route('/:id')
     User.findById(req.params.id, {
       username: 1,
       created_at: 1,
-      _id: 0
+      isActive: 1,
+      isAdmin: 1,
+      _id: 1
     }, function(err, user) {
       if (err) {
         return res.status(500).send({
@@ -38,9 +50,9 @@ router.route('/:id')
         });
       }
       if (!user) {
-        return res.send(404);
+        return res.status(404);
       }
-      return res.send(user);
+      return res.status(200).send(user);
     });
   })
 
@@ -53,7 +65,7 @@ router.route('/:id')
           message: "Server Error:" + err
         });
       }
-      return res.send(204);
+      return res.status(204);
     });
   })
 
@@ -62,5 +74,13 @@ router.route('/:id')
       message: 'TODO: Update the user with id: ' + req.params.id
     });
   });
+
+  var isValidPassword = function(user, password){
+		return bCrypt.compareSync(password, user.password);
+	};
+	// Generates hash using bCrypt
+	var createHash = function(password){
+		return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+	};
 
 module.exports = router;

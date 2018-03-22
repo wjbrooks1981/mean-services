@@ -44,15 +44,38 @@ app.factory('userService', function($resource) {
 
 app.controller('userController', function(userService, $scope, $rootScope) {
   $scope.users = userService.query();
+  $scope.newUser = {
+    created_by: '',
+    created_at: '',
+    username: '',
+    password: '',
+    isAdmin: false,
+    isActive: false
+  };
+
   $scope.delete = function(id) {
     userService.delete({
       id: id
     }, function() {
-      $scope.posts = userService.query();
+      $scope.users = userService.query();
     });
-    // console.log('Delete is called here:' + id);
   };
-
+  $scope.createUser = function() {
+    $scope.newUser.created_by = $rootScope.current_user.username;
+    $scope.newUser.created_at = Date.now();
+    $scope.newUser.isActive = true;
+    userService.save($scope.newUser, function() {
+      $scope.users = userService.query();
+      $scope.newUser = {
+        created_by: '',
+        created_at: '',
+        username: '',
+        password: '',
+        isAdmin: false,
+        isActive: false
+      };
+    });
+  };
 });
 
 app.controller('mainController', function(postService, $scope, $rootScope) {
