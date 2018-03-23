@@ -17,7 +17,9 @@ function isAuthenticated(req, res, next) {
     return next();
   }
   // if the user is not authenticated then redirect him to the login page
-  return res.redirect('/#login');
+  return res.status(403).send({
+    message: 'Unauthorized Session'
+  });
 }
 router.use('/posts', isAuthenticated, posts);
 router.use('/users', isAuthenticated, users);

@@ -6,15 +6,12 @@ router = require('express').Router();
 router.route('/')
   .get(function(req, res) {
     User.find({}, {
-      username: 1,
-      created_at: 1,
-      isActive: 1,
-      isAdmin: 1,
-      _id: 1
+      password: 0,
+      __v: 0
     }, function(err, users) {
       if (err) {
         return res.status(500).send({
-          message: "Server Error:" + err
+          message: "Server Error has occured: " + err
         });
       }
       return res.send(users);
@@ -27,22 +24,19 @@ router.route('/')
     user.password = createHash(req.body.password);
     user.isAdmin = req.body.isAdmin;
     user.isActive = true;
-    user.save(function(err, post){
-      if(err){
+    user.save(function(err, user) {
+      if (err) {
         return res.status(500).send(err);
       }
-      return res.json(post);
+      return res.json(user);
     });
   });
 
 router.route('/:id')
   .get(function(req, res) {
     User.findById(req.params.id, {
-      username: 1,
-      created_at: 1,
-      isActive: 1,
-      isAdmin: 1,
-      _id: 1
+      password: 0,
+      __v: 0
     }, function(err, user) {
       if (err) {
         return res.status(500).send({
@@ -50,7 +44,7 @@ router.route('/:id')
         });
       }
       if (!user) {
-        return res.status(404);
+        return res.sendStatus(404);
       }
       return res.status(200).send(user);
     });
@@ -65,22 +59,38 @@ router.route('/:id')
           message: "Server Error:" + err
         });
       }
-      return res.status(204);
+      return res.status(200).send({
+        message: data
+      });
     });
   })
 
   .put(function(req, res) {
-    res.send({
-      message: 'TODO: Update the user with id: ' + req.params.id
-    });
+    // User.findById(req.params.id, {
+    //   password: 0,
+    //   __v: 0
+    // }, function(err, user) {
+    //   if (err) {
+    //     return res.status(500).send({
+    //       message: "Server Error" + err
+    //     });
+    //   }
+    //   if (!user) {
+    //     return res.status(404);
+    //   }
+    //
+    //   return res.status(200).send(user);
+    // });
   });
 
-  var isValidPassword = function(user, password){
-		return bCrypt.compareSync(password, user.password);
-	};
-	// Generates hash using bCrypt
-	var createHash = function(password){
-		return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
-	};
+var isValidPassword = function(user, password) {
+  return bCrypt.compareSync(password, user.password);
+};
+// Generates hash using bCrypt
+var createHash = function(password) {
+  return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+};
+
+
 
 module.exports = router;
